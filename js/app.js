@@ -28,7 +28,9 @@ async function displayMenu(ul, URL_CATEGORIES, URL_PROXY) {
 
     const responseJson = await loadData(URL_CATEGORIES, URL_PROXY)
     let {name}  = responseJson.data[0]
-    displayBreadcrumb(toCapital(name))
+    let {id}  = responseJson.data[0]
+    displayBreadcrumb(name,id)
+
     for (let { id, name } of responseJson.data) {
         const categoryHTML = buildHTMLCategory(id, name)
         ul.appendChild(categoryHTML)
@@ -62,8 +64,9 @@ async function displayPagination(pagination, URL_PRODUCTS_GETNUMPAGES, URL_PROXY
     }
 }
 
-function displayBreadcrumb(text,categoryId){
-    const paginationHTML=buildHTMLBreadcrumb(text,categoryId)
+function displayBreadcrumb(name,categoryId){
+    const paginationHTML=buildHTMLBreadcrumb(toCapital(name),categoryId)
+    breadcrumbEL.innerHTML=''
     breadcrumbEL.appendChild(paginationHTML)
 }
 
@@ -72,9 +75,8 @@ async function menuListener() {
         item.addEventListener('click', async (event) => {
             const link = event.target.href;
             const categoryId = getTextAfterHash(link)
-            await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId)
-            await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId)
-            displayBreadcrumb(item.innerHTML,categoryId)
+            const categoryName = item.innerHTML
+            await updateHTMLbyCategory(categoryId,categoryName)
             event.preventDefault()
         });
     });
@@ -87,22 +89,28 @@ function searchListener() {
         const query = input.value
         console.log(`The term searched for was ${input.value}`);
         await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, '', '', query)
-
+        await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, '', query)
+        displayBreadcrumb(query,'')
     });
 
 }
 
 async function paginationListener() {
-    document.querySelectorAll('.nav-item a').forEach((item) => {
+    document.querySelectorAll('#paginationEL li a').forEach((item) => {
         item.addEventListener('click', async (event) => {
             const link = event.target.href;
             const categoryId = getTextAfterHash(link)
-            await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId)
-            await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId)
-            displayBreadcrumb(item.innerHTML)
+            const categoryName=item.innerHTML;
+            await updateHTMLbyCategory(categoryId,categoryName)
             event.preventDefault()
         });
     });
+}
+
+async function updateHTMLbyCategory(categoryId=1,categoryName){
+    await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId)
+    await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId)
+    displayBreadcrumb(categoryName,categoryId)
 }
 
 async function run() {
