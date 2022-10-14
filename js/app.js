@@ -3,11 +3,7 @@ import { buildHTMLItem } from "../js/item.js";
 import { buildHTMLCategory } from "../js/category.js";
 import { buildHTMLPagination } from "../js/pagination.js";
 import { buildHTMLBreadcrumb } from "../js/breadcrumb.js";
-
-const URL_PROXY = 'https://young-meadow-11122.herokuapp.com/'
-const URL_CATEGORIES = 'https://frozen-dawn-70616.herokuapp.com/categories'
-const URL_PRODUCTS = 'https://frozen-dawn-70616.herokuapp.com/products'
-const URL_PRODUCTS_GETNUMPAGES = 'https://frozen-dawn-70616.herokuapp.com/products/getNumPages'
+import { URL_PROXY, URL_CATEGORIES, URL_PRODUCTS, URL_PRODUCTS_GETNUMPAGES } from "../js/config.js";
 
 const sidebarUL = document.getElementById('sidebarUL')
 const galleryEL = document.getElementById('galleryEL')
@@ -24,17 +20,19 @@ async function loadData(URL, URL_PROXY) {
         .catch(err => console.warn('Something went wrong.', err))
 }
 
-async function displayMenu(ul, URL_CATEGORIES, URL_PROXY) {
+async function displayAll(ul, URL_CATEGORIES, URL_PROXY) {
     const responseJson = await loadData(URL_CATEGORIES, URL_PROXY)
     let { name } = responseJson.data[0]
     let { id } = responseJson.data[0]
-    displayBreadcrumb(name, id)
+    displayMenu(ul, responseJson)
+    await updateHTML(id, name)
+}
 
+async function displayMenu(ul, responseJson) {
     for (let { id, name } of responseJson.data) {
         const categoryHTML = buildHTMLCategory(id, name)
         ul.appendChild(categoryHTML)
     }
-    updateActiveCategory(1)
 }
 
 async function displayItems(gallery, URL_PRODUCTS, URL_PROXY, categoryId, page = 1, name) {
@@ -86,10 +84,7 @@ function searchListener() {
 
     input.addEventListener('search', async () => {
         const query = input.value
-        await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, '', '', query)
-        await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, '', query)
-        updateActivePage(1)
-        displayBreadcrumb(query, '')
+        await updateHTML('', query, '', query)
     });
 }
 
@@ -121,25 +116,26 @@ function updateActiveCategory(categoryId) {
     if (lastActiveAnchor)
         lastActiveAnchor.setAttribute('class', 'nav-link')
     const activeAnchor = sidebarUL.querySelector(`a[href='#${categoryId}']`)
-    activeAnchor.setAttribute('class', 'nav-link active')
+    if (activeAnchor)
+        activeAnchor.setAttribute('class', 'nav-link active')
 }
 
 function updateActivePage(page) {
 
     const lastActiveLI = paginationEL.querySelector(`li[class='page-item active']`)
+    const activeAnchor = paginationEL.querySelector(`li a[href='#${page}']`)
+    let activeLI;
     if (lastActiveLI)
-    lastActiveLI.setAttribute('class', 'page-item')
-    const activeLI = paginationEL.querySelector(`li a[href='#${page}']`).parentElement
-    activeLI.setAttribute('class', 'page-item active')
-    const queryEl='li'
+        lastActiveLI.setAttribute('class', 'page-item')
+    if (activeAnchor)
+        activeLI = activeAnchor.parentElement
+    if (activeLI)
+        activeLI.setAttribute('class', 'page-item active')
 }
 
 async function run() {
-    await displayMenu(sidebarUL, URL_CATEGORIES, URL_PROXY)
-    const categoryName = breadcrumbEL.getElementsByTagName("a")[0].innerHTML;
-    await updateHTML(1, categoryName)
+    await displayAll(sidebarUL, URL_CATEGORIES, URL_PROXY)
     menuListener()
     searchListener()
-
 }
 run();
