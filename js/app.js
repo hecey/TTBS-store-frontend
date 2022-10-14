@@ -2,6 +2,7 @@ import { toCapital, getTextAfterHash } from "../js/helper.js";
 import { buildHTMLItem } from "../js/item.js";
 import { buildHTMLCategory } from "../js/category.js";
 import { buildHTMLPagination } from "../js/pagination.js";
+import { buildHTMLBreadcrumb } from "../js/breadcrumb.js";
 
 const URL_PROXY = 'https://young-meadow-11122.herokuapp.com/'
 const URL_CATEGORIES = 'https://frozen-dawn-70616.herokuapp.com/categories'
@@ -61,8 +62,9 @@ async function displayPagination(pagination, URL_PRODUCTS_GETNUMPAGES, URL_PROXY
     }
 }
 
-function displayBreadcrumb(text){
-    breadcrumbEL.innerHTML=text
+function displayBreadcrumb(text,categoryId){
+    const paginationHTML=buildHTMLBreadcrumb(text,categoryId)
+    breadcrumbEL.appendChild(paginationHTML)
 }
 
 async function menuListener() {
@@ -72,7 +74,7 @@ async function menuListener() {
             const categoryId = getTextAfterHash(link)
             await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId)
             await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId)
-            displayBreadcrumb(item.innerHTML)
+            displayBreadcrumb(item.innerHTML,categoryId)
             event.preventDefault()
         });
     });
@@ -90,6 +92,18 @@ function searchListener() {
 
 }
 
+async function paginationListener() {
+    document.querySelectorAll('.nav-item a').forEach((item) => {
+        item.addEventListener('click', async (event) => {
+            const link = event.target.href;
+            const categoryId = getTextAfterHash(link)
+            await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId)
+            await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId)
+            displayBreadcrumb(item.innerHTML)
+            event.preventDefault()
+        });
+    });
+}
 
 async function run() {
     await displayMenu(ulEL, URL_CATEGORIES, URL_PROXY)
