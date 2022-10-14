@@ -37,6 +37,12 @@
 
     <!-- start gallery -->
     <div class="album py-3 bg-light w-100">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li id='breadcrumbEL' class="breadcrumb-item active" aria-current="page"></li>
+        </ol>
+      </nav>
+
       <div class="container">
 
         <div id='galleryEL' class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -44,9 +50,8 @@
         <!-- pagination start -->
         <div class="py-4">
           <nav aria-label="Page navigation example">
-            <ul class="pagination">
+            <ul id='paginationEL' class="pagination">
               <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
             </ul>
           </nav>
         </div>
