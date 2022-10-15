@@ -11,13 +11,19 @@ async function loadData(URL, URL_PROXY) {
     })
         .then(response => response.json())
         .then(responseJson => { return responseJson })
-        .catch(err => console.warn('Something went wrong.', err))
+        .catch(err => displayError(err))
+}
+
+function displayError(){
+    window.location.href = 'error404.html';
 }
 
 async function displayAll(config) {
+    spinner(config.sidebarUL, true)
     const responseJson = await loadData(config.URL_CATEGORIES, config.URL_PROXY)
     let { name } = responseJson.data[0]
     let { id } = responseJson.data[0]
+    spinner(config.sidebarUL, false)
     await displayMenu(config.sidebarUL, responseJson)
     const filter = {
         categoryId: id,
@@ -152,6 +158,7 @@ function updateActivePage(page) {
 
 async function run() {
     const config = await import("../js/config.js");
+    spinner(config.galleryEL, true)
     await displayAll(config)
     menuListener(config)
     searchListener(config)
