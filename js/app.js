@@ -1,14 +1,8 @@
-import { toCapital, getTextAfterHash } from "../js/helper.js";
-import { buildHTMLItem } from "../js/item.js";
-import { buildHTMLCategory } from "../js/category.js";
-import { buildHTMLPagination } from "../js/pagination.js";
-import { buildHTMLBreadcrumb } from "../js/breadcrumb.js";
-import { URL_PROXY, URL_CATEGORIES, URL_PRODUCTS, URL_PRODUCTS_GETNUMPAGES } from "../js/config.js";
-
-const sidebarUL = document.getElementById('sidebarUL')
-const galleryEL = document.getElementById('galleryEL')
-const paginationEL = document.getElementById('paginationEL')
-const breadcrumbEL = document.getElementById('breadcrumbEL')
+import { clearElement, spinner, toCapital, getTextAfterHash } from "../js/helper.js";
+import { buildHTMLItem } from "./html/item.js";
+import { buildHTMLCategory } from "./html/category.js";
+import { buildHTMLPagination } from "./html/pagination.js";
+import { buildHTMLBreadcrumb } from "./html/breadcrumb.js";
 
 async function loadData(URL, URL_PROXY) {
     const fullURL = URL_PROXY + URL
@@ -20,75 +14,89 @@ async function loadData(URL, URL_PROXY) {
         .catch(err => console.warn('Something went wrong.', err))
 }
 
-async function displayAll(ul, URL_CATEGORIES, URL_PROXY) {
-    const responseJson = await loadData(URL_CATEGORIES, URL_PROXY)
+async function displayAll(config) {
+    const responseJson = await loadData(config.URL_CATEGORIES, config.URL_PROXY)
     let { name } = responseJson.data[0]
     let { id } = responseJson.data[0]
-    displayMenu(ul, responseJson)
-    await updateHTML(id, name)
+    await displayMenu(config.sidebarUL, responseJson)
+    const filter = {
+        categoryId: id,
+        categoryName: name,
+        page: '',
+        query: ''
+    };
+    await updateHTML(config, filter)
 }
 
 async function displayMenu(ul, responseJson) {
     for (let { id, name } of responseJson.data) {
         const categoryHTML = buildHTMLCategory(id, name)
-        ul.appendChild(categoryHTML)
+        ul.innerHTML += categoryHTML
     }
 }
 
-async function displayItems(gallery, URL_PRODUCTS, URL_PROXY, categoryId, page = 1, name) {
-    gallery.innerHTML = ""
-    let filter = `?page=${page ? page : 1}&`
-    filter += name ? `name=${name}` : `categoryId=${categoryId}`
+async function displayItems(config, filter) {
+    spinner(config.galleryEL, true)
+    let queryFilter = `?page=${filter.page ? filter.page : 1}&`
+    queryFilter += filter.query
+        ? `name=${filter.query}`
+        : `categoryId=${filter.categoryId}`
 
-    const responseJson = await loadData(URL_PRODUCTS.concat(filter), URL_PROXY)
-
+    const responseJson = await loadData(config.URL_PRODUCTS.concat(queryFilter), config.URL_PROXY)
+    spinner(config.galleryEL, false)
     for (let { id, name, url_image, price, discount } of responseJson.data) {
-        const itemHTML = buildHTMLItem(id, name, url_image, price, discount)
-        gallery.appendChild(itemHTML)
+        config.galleryEL.innerHTML += buildHTMLItem(id, name, url_image, price, discount)
     }
 }
 
-async function displayPagination(pagination, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId, name) {
-    pagination.innerHTML = ""
-    const filter = name ? `?name=${name}` : `?categoryId=${categoryId}`
-    const responseJson = await loadData(URL_PRODUCTS_GETNUMPAGES.concat(filter), URL_PROXY)
-
+async function displayPagination(config, filter) {
+    const queryFilter = filter.name ? `?name=${filter.name}` : `?categoryId=${filter.categoryId}`
+    const responseJson = await loadData(config.URL_PRODUCTS_GETNUMPAGES.concat(queryFilter), config.URL_PROXY)
     let { pages } = responseJson.data[0]
     for (let step = 0; step < pages; step++) {
-        const paginationHTML = buildHTMLPagination(step + 1)
-        pagination.appendChild(paginationHTML)
+        config.paginationEL.innerHTML +=buildHTMLPagination(step + 1)
     }
-    paginationListener()
+    paginationListener(config)
 }
 
 function displayBreadcrumb(name, categoryId) {
-    const paginationHTML = buildHTMLBreadcrumb(toCapital(name), categoryId)
-    breadcrumbEL.innerHTML = ''
-    breadcrumbEL.appendChild(paginationHTML)
+    breadcrumbEL.innerHTML = buildHTMLBreadcrumb(toCapital(name), categoryId)
 }
 
-async function menuListener() {
+async function menuListener(config) {
     document.querySelectorAll('.nav-item a').forEach((item) => {
         item.addEventListener('click', async (event) => {
             const link = event.target.href;
             const categoryId = getTextAfterHash(link)
             const categoryName = item.innerHTML
-            await updateHTML(categoryId, categoryName)
+            const filter = {
+                categoryId: categoryId,
+                categoryName: categoryName,
+                page: '',
+                query: ''
+            };
+            await updateHTML(config, filter)
             event.preventDefault()
         });
     });
 }
 
-function searchListener() {
+function searchListener(config) {
     const input = document.querySelector("input[type='search']")
 
     input.addEventListener('search', async () => {
         const query = input.value
-        await updateHTML('', query, '', query)
+        const filter = {
+            categoryId: '',
+            categoryName: query,
+            page: '',
+            query: query
+        };
+        await updateHTML(config, filter)
     });
 }
 
-async function paginationListener() {
+async function paginationListener(config) {
     document.querySelectorAll('#paginationEL li a').forEach((item) => {
         item.addEventListener('click', async (event) => {
             const pageLink = event.target.href;
@@ -97,18 +105,27 @@ async function paginationListener() {
             const categoryId = getTextAfterHash(categoryLink)
             const categoryName = breadcrumbEL.getElementsByTagName("a")[0].innerHTML;
             const query = !categoryId ? categoryName : ''
-            await updateHTML(categoryId, categoryName, page, query)
+
+            const filter = {
+                categoryId: categoryId,
+                categoryName: categoryName,
+                page: page,
+                query: query
+            };
+
+            await updateHTML(config, filter)
             event.preventDefault()
         });
     });
 }
 
-async function updateHTML(categoryId, categoryName, page = 1, query) {
-    await displayItems(galleryEL, URL_PRODUCTS, URL_PROXY, categoryId, page, query)
-    await displayPagination(paginationEL, URL_PRODUCTS_GETNUMPAGES, URL_PROXY, categoryId, query)
-    displayBreadcrumb(categoryName, categoryId)
-    updateActiveCategory(categoryId)
-    updateActivePage(page)
+async function updateHTML(config, filter) {
+    clearElement(config.paginationEL)
+    displayBreadcrumb(filter.categoryName, filter.categoryId)
+    updateActiveCategory(filter.categoryId)
+    await displayItems(config, filter)
+    await displayPagination(config, filter)
+    updateActivePage(filter.page)
 }
 
 function updateActiveCategory(categoryId) {
@@ -134,8 +151,9 @@ function updateActivePage(page) {
 }
 
 async function run() {
-    await displayAll(sidebarUL, URL_CATEGORIES, URL_PROXY)
-    menuListener()
-    searchListener()
+    const config = await import("../js/config.js");
+    await displayAll(config)
+    menuListener(config)
+    searchListener(config)
 }
 run();
