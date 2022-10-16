@@ -46,15 +46,16 @@ const menuListener = async (config) => {
 const searchListener = (config) => {
     const input = document.querySelector("input[type='search']")
 
-    input.addEventListener('search', async () => {
+    input.addEventListener('search', async (event) => {
         const query = input.value
         const filter = {
             categoryId: '',
             categoryName: query,
-            page: '',
+            page: 1,
             query: query
         };
         await updateHTML(config, filter)
+        event.preventDefault()
     });
 }
 

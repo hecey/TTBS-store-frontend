@@ -45,7 +45,7 @@ const renderItems = async (config, filter) => {
 }
 
 const renderPagination = async (config, filter) => {
-    const queryFilter = filter.name ? `?name=${filter.name}` : `?categoryId=${filter.categoryId}`
+    const queryFilter = filter.query ? `?name=${filter.query}` : `?categoryId=${filter.categoryId}`
     const responseJson = await loadJsonData(config.URL_PRODUCTS_GETNUMPAGES.concat(queryFilter), config.URL_PROXY)
     let { pages } = responseJson.data[0]
     for (let step = 0; step < pages; step++) {
@@ -59,13 +59,16 @@ const renderBreadcrumb = (name, categoryId) => {
 }
 
 const loadJsonData = async (URL, URL_PROXY) => {
+
+    let abortController = new AbortController();
+    window.onbeforeunload = function(e) { abortController.abort(); };
+
     const fullURL = URL_PROXY + URL
-    return fetch(fullURL, {
-        method: 'GET',
-    })
+    return await fetch(fullURL,{"signal" : abortController.signal})
         .then(response => response.json())
         .then(responseJson => { return responseJson })
-        .catch(err => redirectErrorPage(err))
+        .catch(err => {redirectErrorPage(err)
+    })
 }
 
 
