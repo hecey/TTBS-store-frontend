@@ -1,5 +1,5 @@
 export const buildHTMLItem = (id, name, url_image, price, discount) => {
-    return `<div class="col"><div class="card shadow-sm">
+    return `<div class="col" style="min-width: 250px"><div class="card shadow-sm" >
     <div class="border d-flex aligns-items-center justify-content-center">
     <img class="bd-placeholder-img  py-2 px-2 " src="${!url_image == '' ? url_image : "/images/image-not-found-icon.svg"}" height="200px">
     </div>
