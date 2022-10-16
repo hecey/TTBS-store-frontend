@@ -1,2 +1,4 @@
 node_modules/
 .markdownlint.json
+package-lock.json
+package.json

@@ -28,9 +28,12 @@ const paginationListener = async (config) => {
 const menuListener = async (config) => {
     document.querySelectorAll('.nav-item a').forEach((item) => {
         item.addEventListener('click', async (event) => {
-            const link = event.target.href;
-            const categoryId = getTextAfterHash(link)
-            const categoryName = item.innerHTML
+            event.preventDefault()
+            let el = event.currentTarget
+            if(el.tagName!="A")
+                el=el.parentElement
+            const categoryId = getTextAfterHash(el.href)
+            const categoryName = el.textContent.replace(/(\r\n|\n|\r)/gm, "").trim()
             const filter = {
                 categoryId: categoryId,
                 categoryName: categoryName,
