@@ -1,20 +1,14 @@
-export function toCapital(text) {
-    const words = text.split(" ");
+const toCapital = (text) => {
+    const words = text.split(" ")
     return words.map((word) => {
         return word[0].toUpperCase() + word.substring(1);
-    }).join(" ");
+    }).join(" ")
 }
-export function getTextAfterHash(text) {
-    return text.substring(text.lastIndexOf('#') + 1);
-}
+const getTextAfterHash = (text) => text.substring(text.lastIndexOf('#') + 1)
+const clearElement = (el) => el.innerHTML = ''
 
-export function spinner(el, display){
-    if(display)
-        el.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'
-    else
-        el.innerHTML =''
-}
-
-export function clearElement(el){
-    el.innerHTML = ''
+export {
+    toCapital,
+    getTextAfterHash,
+    clearElement
 }
