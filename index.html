@@ -20,37 +20,38 @@
 
 <body>
   <div class="container-fluid overflow-hidden px-0">
-    <div class="row vh-100 overflow-auto">
-      <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 py-2 bg-dark d-flex sticky-top" style="min-width: 250px;">
+    <div class="row vh-100 overflow-auto px-0">
+      <div class="col-12 col-sm-3 col-xl-2  px-0 m-0 p-2 bg-dark d-flex sticky-top px-3" >
           <div
-            class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3  text-white" >
-            <a href="/"
-              class="d-flex align-items-center pb-sm-1  md-0 me-md-auto text-white text-decoration-none">
-
-              <span class="fs-5 px-2" style="min-width: 100px">Store App<span class="d-none d-sm-inline"></span></span>
-            </a>
-            <!-- start search -->
-            <div class="p-1 d-none d-sm-block" role="search">
-              <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </div>
-            <!-- end search -->
-
+            class="d-flex flex-sm-column flex-row flex-grow-1  align-items-sm-start m-0 px-0  text-white ml-2" >
             <ul id="sidebarUL"
-              class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start py-1 px-1 w-100"
+              class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0
+              flex-grow-1 m-0 p-0 mb-sm-auto justify-content-center align-items-center align-items-sm-start"
               id="menu">
             </ul>
           </div>
 
       </div>
-      <div class="col d-flex flex-column h-sm-100 vh-100">
-        <main class="row overflow-auto">
-          <div class="col pt-2">
-            <section class="col-sm bg-light ">
-              <ol class="breadcrumb">
-                <li id='breadcrumbEL' class="breadcrumb-item active" aria-current="page"></li>
+      <div class="col d-flex flex-column h-sm-100 vh-100 m-0 px-0 ">
+        <main class="row overflow-auto m-0 mx-3 px-0 pr-1 align-top">
+          <div class="row sticky-top bg-light mx-0 px-0 " style="height: 45px;">
+
+            <div class="col  mx-0 px-0 py-2 bg-light">
+                <!-- start search -->
+            <div class="my-0 my-1 py-0" role="search">
+              <input type="search" class="form-control " placeholder="Search..." aria-label="Search">
+            </div>
+            <!-- end search -->
+            </div>
+
+          </div>
+          <div class="col pt-2 mx-0 px-0">
+            <section class="bg-light ">
+              <ol class="breadcrumb  p-1 m-0 mb-2">
+                <li id='breadcrumbEL' class="breadcrumb-item active m-0 pt-2 px-2" aria-current="page"></li>
               </ol>
               <!-- start gallery -->
-              <div id='galleryEL' class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+              <div id='galleryEL' class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
               </div>
               <!-- end gallery -->
               <!-- pagination start -->
