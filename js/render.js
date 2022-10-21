@@ -7,6 +7,7 @@ import { clearElement, toCapital } from "../js/helper.js"
 import { paginationListener } from "../js/listener.js"
 
 const renderAll = async (config) => {
+    document.getElementById("searchForm").onsubmit = (event) => event.preventDefault()
     spinner(config.sidebarUL, true)
     spinner(config.galleryEL, true)
     const responseJson = await loadJsonData(config.URL_CATEGORIES, config.URL_PROXY)
@@ -61,14 +62,15 @@ const renderBreadcrumb = (name, categoryId) => {
 const loadJsonData = async (URL, URL_PROXY) => {
 
     let abortController = new AbortController();
-    window.onbeforeunload = function(e) { abortController.abort(); };
+    window.onbeforeunload = function (e) { abortController.abort(); };
 
     const fullURL = URL_PROXY + URL
-    return await fetch(fullURL,{"signal" : abortController.signal})
+    return await fetch(fullURL, { "signal": abortController.signal })
         .then(response => response.json())
         .then(responseJson => { return responseJson })
-        .catch(err => { return console.log(err)
-    })
+        .catch(err => {
+            return console.log(err)
+        })
 }
 
 const redirectErrorPage = () => {

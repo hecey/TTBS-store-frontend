@@ -5,44 +5,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Store APP</title>
+  <!-- Bootstrap Framework CSS-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
     integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous" />
   <!-- Bootstrap Font Icon CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
+  <!-- APP; Carga la funcionalidades desarrolladas para la tienda online -->
   <script type="module" src="js/app.js"></script>
 </head>
 
 <body>
   <div class="container-fluid overflow-hidden px-2">
     <div class="row vh-100 overflow-auto px-0">
-      <div class="col-12 col-sm-3 col-xl-2  px-0 m-0 p-2 bg-dark d-flex sticky-top ">
+      <nav class="col-12 col-sm-3 col-xl-2  px-0 m-0 p-2 bg-dark d-flex sticky-top ">
+        <!-- Menu -->
         <ul id="sidebarUL" class="nav nav-pills flex-sm-column flex-row flex-nowrap
                mb-sm-auto  ml-2 mr-0 pl-2 mr-1 ">
         </ul>
-      </div>
-
+      </nav>
       <main class=" col h-sm-100 vh-100  m-0 mx-2 px-2 ">
-        <!-- start search -->
-        <form onsubmit="event.preventDefault();">
+        <!-- Search -->
+        <form id="searchForm">
           <input type="search" class="form-control mt-2" placeholder="Search..." aria-label="Search">
         </form>
-        <!-- end search -->
         <section class="bg-light pt-2 mx-0 px-0">
+          <!-- Migaja de pan -->
           <ol class="breadcrumb  p-1 m-0 mb-2">
             <li id='breadcrumbEL' class="breadcrumb-item active m-0 pt-2 px-2" aria-current="page"></li>
           </ol>
-          <!-- start gallery -->
+          <!-- Gallery -->
           <div id='galleryEL' class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-0"> </div>
-          <!-- end gallery -->
-          <!-- pagination start -->
+          <!-- pagination  -->
           <ul id='paginationEL' class="pagination my-2"> </ul>
-          <!-- pagination end -->
         </section>
       </main>
     </div>
