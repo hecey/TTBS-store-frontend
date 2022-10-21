@@ -50,7 +50,7 @@ const searchListener = (config) => {
     const input = document.querySelector("input[type='search']")
 
     input.addEventListener('keyup', async (event) => {
-      
+
         const query = input.value
         const filter = {
             categoryId: '',
@@ -59,7 +59,7 @@ const searchListener = (config) => {
             query: query
         };
 
-        if (event.keyCode === 13) {
+        if (event.keyCode === 13 || event.keyCode === "") {
             await updateHTML(config, filter)
         }
         event.preventDefault()

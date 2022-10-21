@@ -67,10 +67,9 @@ const loadJsonData = async (URL, URL_PROXY) => {
     return await fetch(fullURL,{"signal" : abortController.signal})
         .then(response => response.json())
         .then(responseJson => { return responseJson })
-        .catch(err => { return {err: err}
+        .catch(err => { return console.log(err)
     })
 }
-
 
 const redirectErrorPage = () => {
     window.location.href = 'error404.html'

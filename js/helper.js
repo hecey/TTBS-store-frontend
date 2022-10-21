@@ -1,4 +1,6 @@
 const toCapital = (text) => {
+    if(text=="") return ""
+
     const words = text.split(" ")
     return words.map((word) => {
         return word[0].toUpperCase() + word.substring(1);

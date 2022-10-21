@@ -29,7 +29,9 @@
 
       <main class=" col h-sm-100 vh-100  m-0 mx-2 px-2 ">
         <!-- start search -->
-        <input type="search" class="form-control mt-2" placeholder="Search..." aria-label="Search">
+        <form onsubmit="event.preventDefault();">
+          <input type="search" class="form-control mt-2" placeholder="Search..." aria-label="Search">
+        </form>
         <!-- end search -->
         <section class="bg-light pt-2 mx-0 px-0">
           <ol class="breadcrumb  p-1 m-0 mb-2">
