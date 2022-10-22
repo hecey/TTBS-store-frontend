@@ -12,9 +12,7 @@ export const buildHTMLItem = (id, name, url_image, price, discount) => {
         ? `<img class="img-fluid img-thumbnail"
                 style="border:0;height: auto;max-width: 100%;max-height: 180px;"
                 src="${url_image}">`
-        : `<svg class="" style="">
-                <image xlink:href="/images/image-not-found-icon.svg"/ height="90" x="35%" y="20%" >
-           </svg>`
+        : `<img alt="File:Picture icon BLACK.svg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/149px-Picture_icon_BLACK.svg.png?20180309172929" decoding="async" srcset="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/224px-Picture_icon_BLACK.svg.png?20180309172929 1.5x, https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929 2x" data-file-width="149" data-file-height="132" width="149" height="132">`
 
     return `
     <div class="d-flex flex-fill">
