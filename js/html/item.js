@@ -8,11 +8,9 @@
  * @returns {html}
  */
 export const buildHTMLItem = (id, name, url_image, price, discount) => {
-    const image = (!url_image == '')
-        ? `<img class="img-fluid img-thumbnail"
-                style="border:0;height: auto;max-width: 100%;max-height: 180px;"
-                src="${url_image}">`
-        : `<img src="images/image-not-found-icon.png">`
+    const image = `<img class="img-fluid img-thumbnail"
+                        style="border:0;height: auto;max-width: 100%;max-height: 180px;"
+                        src="${(!url_image == '') ? url_image : "images/image-not-found-icon.png"}">`
 
     return `
     <div class="d-flex flex-fill">
