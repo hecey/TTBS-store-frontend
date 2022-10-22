@@ -12,7 +12,11 @@ export const buildHTMLItem = (id, name, url_image, price, discount) => {
     <div class="d-flex flex-fill">
         <div class="d-flex flex-fill card shadow-sm m-1">
             <div class="p-2 d-flex aligns-items-center justify-content-center "  style="heigh:280px;">
-                <img class="img-fluid img-thumbnail " style="border:0;height: auto;max-width: 100%;max-height: 180px;min-height: 180px;" src="${!url_image == '' ? url_image : "/images/image-not-found-icon.svg"}" >
+            <div class="d-flex  flex-column aligns-items-center justify-content-center p-0 m-0 h-100" style="height:100%;min-height: 180px;">
+                <img class="img-fluid img-thumbnail"
+                        style="border:0;height: auto;max-width: 100%;max-height: 180px;"
+                        src="${!url_image == '' ? url_image : "/images/image-not-found-icon.svg"}" >
+                </div>
             </div>
             <div class="row p-2 m-2 aligns-items-center  justify-content-center card-body bg-secondary text-white "  >
                 <div class="d-flex  flex-column  p-0 m-0 h-100" style="height:100%">

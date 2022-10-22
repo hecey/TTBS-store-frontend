@@ -4,5 +4,7 @@
  * @returns {html}
  */
 export const buildHTMLPagination = (number) => {
-    return `<li class="page-item"><a href="#${number}" class="page-link">${number}</a></li>`
+    return `<li class="page-item">
+                <a href="#${number}" class="page-link">${number}</a>
+            </li>`
 }
