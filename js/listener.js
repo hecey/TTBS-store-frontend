@@ -1,6 +1,10 @@
 import { getTextAfterHash } from "../js/helper.js"
 import { updateHTML } from "./render.js"
 
+/**
+ * Inicia el evento que escucha por clic en la paginación de la pagina
+ * @param {object} config Contiene los elemento html a manipular y urls del backend
+  */
 const paginationListener = async (config) => {
     document.querySelectorAll('#paginationEL li a').forEach((item) => {
         item.addEventListener('click', async (event) => {
@@ -25,6 +29,10 @@ const paginationListener = async (config) => {
 }
 
 
+/**
+ * Inicia el evento que escucha por clic en el menu de la pagina
+ * @param {object} config Contiene los elemento html a manipular y urls del backend
+ */
 const menuListener = async (config) => {
     document.querySelectorAll('.nav-item a').forEach((item) => {
         item.addEventListener('click', async (event) => {
@@ -46,6 +54,10 @@ const menuListener = async (config) => {
     });
 }
 
+/**
+ * Inicia el evento que escucha por submit en la caja de búsqueda de la pagina
+ * @param {object} config Contiene los elemento html a manipular y urls del backend
+ */
 const searchListener = (config) => {
     const input = document.querySelector("input[type='search']")
 

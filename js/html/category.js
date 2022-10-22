@@ -1,4 +1,10 @@
 import { toCapital } from "../helper.js";
+/**
+ * Generate html li element for category
+ * @param {number} id Id de categoría
+ * @param {string} name Nombre de categoría
+ * @returns {html}
+ */
 export const buildHTMLCategory = (id, name) => {
     return `
     <li class="nav-item w-100 ">

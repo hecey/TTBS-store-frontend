@@ -1,3 +1,12 @@
+/**
+ * Genera el html para mostrar un item en la tarjeta
+ * @param {number} id id de producto
+ * @param {string} name nombre de producto
+ * @param {url} url_image ruta a la imagen
+ * @param {number} price precio del producto
+ * @param {number} discount descuento del producto
+ * @returns {html}
+ */
 export const buildHTMLItem = (id, name, url_image, price, discount) => {
     return `
     <div class="d-flex flex-fill">
